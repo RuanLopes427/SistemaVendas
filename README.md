@@ -1,60 +1,57 @@
 # Sistema de Vendas em Java
 
-Projeto educacional de um sistema de vendas executado pelo console, desenvolvido para praticar Programação Orientada a Objetos (POO), validações e regras de negócio em Java.
+Projeto pessoal de estudos desenvolvido para praticar os fundamentos de Java e Programação Orientada a Objetos (POO) por meio da modelagem de um sistema de vendas executado pelo console.
 
-> **Status:** em desenvolvimento. Os pagamentos são simulados: o sistema não se conecta a bancos, adquirentes ou serviços de pagamento reais.
+> **Status:** em desenvolvimento. Este é um projeto de aprendizado: os pagamentos são simulados e não existe conexão com bancos, adquirentes ou serviços financeiros reais.
 
-## Objetivo
+## Sobre o projeto
 
-Modelar o fluxo básico de uma venda: representar clientes, funcionários e produtos; montar pedidos; calcular valores; simular diferentes formas de pagamento; e controlar os estados do pedido e do pagamento.
+Comecei recentemente a estudar Java e criei este projeto para transformar os conceitos que venho aprendendo em código. A proposta é modelar as principais partes de uma venda — clientes, funcionários, produtos, itens e pedidos — e praticar como as classes colaboram para aplicar regras de negócio.
 
 ## Funcionalidades
 
-- Modelagem de pessoas por meio da classe abstrata `Person`, especializada em `Customer` e `Employee`.
-- Cadastro de produtos com SKU, preço e estoque em memória.
+- Modelagem de pessoas usando a classe abstrata `Person`, especializada em `Customer` e `Employee`.
+- Cadastro de produtos com SKU, preço e estoque mantidos em memória.
 - Criação de pedidos com identificador único, data de criação, cliente, funcionário, itens e estados.
-- Adição e remoção de itens e cálculo do subtotal do pedido.
-- Registro do preço unitário do produto no momento em que o item é criado, preservando o valor histórico daquele item.
-- Interface `Payment` para tratar as formas de pagamento de maneira polimórfica.
-- Simulação de Pix e cartão de crédito na versão atual revisada; boleto faz parte do escopo, mas a classe precisa estar alinhada aos nomes atuais dos enums antes da publicação.
-- Estados do pedido (`OrderStatus`) e do pagamento (`PaymentStatus`) representados por `enum`.
-- Validações com exceções como `IllegalArgumentException` e `IllegalStateException`.
-
-Os dados são mantidos em memória; não há banco de dados nem persistência entre execuções.
+- Adição e remoção de itens e cálculo de subtotal e total do pedido.
+- Armazenamento do preço unitário no momento em que um item é criado, preservando o preço histórico daquela linha do pedido.
+- Interface `Payment` para tratar diferentes formas de pagamento de modo polimórfico.
+- Simulação de pagamentos por Pix, cartão de crédito e boleto.
+- Controle dos estados do pedido (`OrderStatus`) e do pagamento (`PaymentStatus`) por meio de `enum`.
+- Validações de entrada e tratamento de exceções, incluindo `IllegalArgumentException` e `IllegalStateException`.
 
 ## Regras de pagamento simuladas
 
-| Forma de pagamento | Regra do exercício | Resultado simulado |
+| Forma de pagamento | Regra de cálculo | Resultado simulado |
 |---|---|---|
-| Pix | Desconto de 5% | Aprovado quando a chave passa pela validação básica |
-| Cartão de crédito | Sem acréscimo em 1 parcela; acréscimo único de 2% em 2 a 6 parcelas | Aprovado quando os últimos quatro dígitos e a quantidade de parcelas passam pelas validações básicas |
-| Boleto (escopo previsto) | Desconto de 3% | Deve ficar pendente até confirmação manual; confirme a versão atual da classe antes de publicar |
+| Pix | Desconto de 5% | Aprovação simulada quando a chave passa pela validação básica |
+| Cartão de crédito | Sem acréscimo em 1 parcela; acréscimo único de 2% de 2 a 6 parcelas | Aprovação simulada quando os dados básicos passam pelas validações |
+| Boleto | Desconto de 3% | Fica pendente até a confirmação manual |
 
-Essas regras são exclusivamente didáticas. Uma validação de formato não confirma que uma chave, cartão ou boleto seja real ou válido em um sistema financeiro.
+Essas regras têm finalidade exclusivamente educacional. A validação de um formato não confirma que uma chave Pix, um cartão ou um boleto seja real ou válido em uma instituição financeira.
 
-## Conceitos de Java praticados
+## Conceitos praticados
 
 - **Abstração:** classe abstrata `Person`.
 - **Herança:** `Customer` e `Employee` estendem `Person`.
-- **Encapsulamento:** objetivo de manter os atributos `private` e controlar o acesso ao estado dos objetos por métodos de domínio; confirme que a versão enviada ao GitHub contém essa revisão.
-- **Polimorfismo:** o pedido utiliza o contrato da interface `Payment`, sem precisar depender de uma implementação específica.
+- **Encapsulamento:** atributos privados e acesso controlado aos dados por meio dos métodos das classes.
+- **Polimorfismo:** o pedido interage com o contrato `Payment`, sem depender diretamente de uma forma de pagamento específica.
 - **Interfaces:** contrato comum para calcular, processar e descrever pagamentos.
-- **Composição e associação:** um `Order` contém itens; cada `OrderItems` referencia um `Product`; pedidos se relacionam com clientes, funcionários e pagamentos.
-- **Enums:** controle dos estados de pedido e pagamento.
-- **Collections:** lista de itens do pedido.
+- **Composição e associação:** um `Order` contém itens; cada `OrderItems` referencia um `Product`; os pedidos se relacionam com clientes, funcionários e pagamentos.
+- **Enums:** representação dos estados de pedidos e pagamentos.
+- **Collections:** lista de itens do pedido com `ArrayList`.
 - **Datas:** `LocalDate` e `LocalDateTime`.
-- **Valores monetários:** `BigDecimal` para operações financeiras.
-- **Exceções:** rejeição de argumentos inválidos e operações incompatíveis com o estado do pedido.
+- **Valores monetários:** `BigDecimal` para cálculos de valores.
+- **Identificadores:** `UUID` para gerar identificadores de pedido.
+- **Exceções:** tratamento de argumentos inválidos e operações incompatíveis com o estado do objeto.
 
 ## Tecnologias
 
-- Java — desenvolvido com JDK 26.
+- Java (desenvolvido com JDK 26).
 - IntelliJ IDEA.
-- APIs padrão do Java; o modelo atual não exige bibliotecas externas.
+- APIs padrão do Java, sem dependências externas necessárias para o modelo atual.
 
-## Estrutura de pacotes
-
-A organização esperada do código é semelhante à seguinte. Ajuste os nomes da árvore para refletir os arquivos efetivamente presentes no repositório antes de publicar.
+## Estrutura do projeto
 
 ```text
 SistemaVendas/
@@ -124,7 +121,7 @@ classDiagram
         -PaymentStatus statusPayment
         -Customer customer
         -Employee employee
-        -List~OrderItems~ items
+        -ArrayList~OrderItems~ items
         -Payment payment
         +additem(product, quantity) void
         +removeItem(sku) boolean
@@ -174,35 +171,38 @@ classDiagram
 
 ## Como executar
 
-1. Instale um JDK e abra o projeto no IntelliJ IDEA.
-2. Confira em **File → Project Structure** se o SDK do projeto está apontando para o JDK instalado.
-3. Confirme que `src` está marcada como **Sources Root** e que os arquivos estão nos diretórios correspondentes aos seus `package`.
+1. Instale um JDK compatível com o projeto e abra a pasta no IntelliJ IDEA.
+2. Em **File → Project Structure**, confira se o SDK do projeto aponta para o JDK instalado.
+3. Confirme que a pasta `src` está marcada como **Sources Root** e que os arquivos estão nos diretórios correspondentes às declarações `package`.
 4. Abra `Main.java` e execute o método `main()` pelo IntelliJ.
-5. Confira as mensagens no console para verificar cálculos, mudanças de estado e exceções.
+5. Confira o console para acompanhar os resultados dos cálculos, os estados do pedido e as exceções dos cenários executados.
 
-## Cenários de teste recomendados
+## Cenários para testar
 
-- Criar produtos válidos e tentar criar produtos com preço zero/negativo ou estoque negativo.
+- Criar produtos com dados válidos e tentar informar preço ou estoque inválidos.
 - Criar um pedido e conferir o subtotal de vários itens.
-- Rejeitar produto nulo e quantidade zero ou negativa.
-- Testar Pix aprovado, cartão recusado por dados inválidos e boleto pendente.
-- Confirmar um pagamento pendente e conferir os estados do pedido e do pagamento.
-- Tentar comprar mais unidades do que existem no estoque.
+- Tentar adicionar produto nulo, quantidade zero ou quantidade negativa.
+- Simular Pix aprovado, cartão recusado por dados inválidos e boleto pendente.
+- Confirmar manualmente um pagamento pendente e conferir os estados do pedido e do pagamento.
+- Tentar comprar mais unidades do que existem em estoque.
 - Tentar adicionar itens ou finalizar pedidos pagos, cancelados ou aguardando pagamento.
-- Conferir se operações inválidas geram exceções apropriadas sem deixar o pedido ou o estoque em estado inconsistente.
+- Verificar se as exceções são lançadas e tratadas sem deixar o pedido ou o estoque em estado inconsistente.
 
-Os cenários são atualmente voltados a testes manuais pelo `Main`. Testes automatizados com JUnit podem ser adicionados futuramente.
+Os cenários são executados manualmente pelo `Main`. Testes automatizados com JUnit ainda podem ser adicionados como evolução do projeto.
 
-## Pontos para revisar antes da primeira versão pública
+## Próximas melhorias
 
-- Confirmar que todos os atributos da versão a publicar estão declarados como `private` e que a lista interna de itens não pode ser modificada diretamente a partir de `getItems()`.
-- Garantir que a adição repetida do mesmo SKU atualize a linha existente e que a soma das quantidades não ultrapasse o estoque.
-- Verificar a disponibilidade de todos os produtos antes de baixar qualquer estoque, tanto no pagamento imediato quanto na confirmação de boleto.
-- Validar as entradas de `replenishStock()` e `updatePrice()` para evitar estoque ou preço inválidos.
-- Garantir que `removeItem()` só possa alterar pedidos em estado permitido.
-- Confirmar que o arquivo de boleto foi renomeado para `TicketPayment.java` e utiliza `PaymentStatus`, de forma consistente com as classes atuais.
-- Adicionar testes automatizados para cálculos, validações, estados e estoque.
+- Consolidar em uma única linha os itens com o mesmo SKU e validar a quantidade total solicitada.
+- Verificar a disponibilidade de todos os produtos antes de baixar qualquer estoque, tanto na aprovação imediata quanto na confirmação de boleto.
+- Restringir a remoção de itens aos pedidos em estado permitido.
+- Reforçar as validações dos métodos de reposição de estoque e atualização de preço.
+- Criar testes automatizados para cálculos, validações, estados e estoque.
+- Avaliar futuramente persistência em banco de dados e uma interface além do console.
 
 ## Escopo e limitações
 
-Este projeto tem finalidade de estudo e portfólio. Os pagamentos são simulações locais; não há integração financeira, autenticação, persistência em banco de dados ou interface gráfica. O fluxo de estoque e os testes devem continuar sendo revisados antes de considerar o sistema pronto para uso real.
+Este projeto tem finalidade de estudo e portfólio. Os dados ficam em memória e são perdidos ao encerrar o programa. Não há interface gráfica, autenticação, integração financeira ou persistência em banco de dados.
+
+---
+
+Projeto desenvolvido para praticar Java, aprender com erros, corrigir regras de negócio e evoluir gradualmente na programação orientada a objetos.
